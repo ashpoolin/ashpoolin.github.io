@@ -171,14 +171,14 @@ So here's a table on which account to use as the payer:
   <td>buy</td>
   <td>SPL token</td>
   <td>unsettled</td>
-  <td>base token address</td>
+  <td>quote token address</td>
 </tr>
 <tr>
   <td>SPL/SOL, SPL/XXX</td>
   <td>sell</td>
   <td>SPL token</td>
   <td>unsettled</td>
-  <td>quote token address</td>
+  <td>base token address</td>
 </tr>
 
 </tbody>
@@ -199,7 +199,7 @@ It should be noted that Serum seems to accept both SOL or wrapped SOL ("wSOL" fo
 IIRC, if the SPL token account for a pair you are quoting doesn't exist at the time you are placing an order, a small amount of SOL (0.002xx) will be deducted as rent to create the account.
 
 #### Base Token Account
-This is an unsettled token account used by Serum. The base token account is an SPL token account, which is the "base" of the trading pair (e.g. SOL in the pair RAY/SOL). This is essentially the source token account that will provide money (the `payer`) for a 'buy', or receive tokens during a 'sell'. 
+This is an unsettled token account used by Serum. By forex trading conventions, "base" represents the first token listed in a trading pair (e.g. RAY in the pair RAY/SOL). This is essentially the source token account that will provide money (the `payer`) for a 'sell', or receive tokens during a 'buy'. 
 
 These accounts may be accessed in the following way:
 ```
@@ -211,7 +211,7 @@ const baseTokenAccount = base[0].pubkey;
 Note: this account is returned as a serialized BN, so it will not be readily human-readable. Neverless, if used as the `payer` for `markets.placeOrder(...)` or as the base account in the `market.settleFunds(...)` function, it should work. 
 
 #### Quote Token Account
-This is an unsettled token account used by Serum. The quote token account is the top half of the pair (e.g. RAY in trading pair RAY/SOL), and the SPL token account of the token that you "quote" when trying to buy. Again, the quote token is what you receive during a 'buy', or what you give away when you 'sell'.   
+This is an unsettled token account used by Serum. By forex trading conventions, "quote" represents the second token listed in a trading pair (e.g. SOL in trading pair RAY/SOL). It is the token that denominates the amount that is "quoted" when trying to buy. For clarity, the quote token is what you trade away during a 'buy', or what you get in return when you 'sell'.
 
 These accounts may be accessed in the following way:
 ```
@@ -265,7 +265,7 @@ console.log("minimum order size: " + market.minOrderSize.toString());
 ```
 
 ### Using Serum
-Up until this point, I've just been providing background, because this honestly was the hardest part for me to get my head around. The nuances explained above comprise implicit context for how you operate the client. Much of these details are stored in devs' heads, and never seem to have been put to paper. So that's a major goal for these posts: *to demystify Serum*.
+Up until this point, I've just been providing background, because this honestly was the hardest part for me to get my head around. The nuances explained thus far is the implicit context you need in order to operate the client. Much of these details are stored in devs' heads, and never seem to have been put to paper. So that's a major goal for these posts: *to demystify Serum*.
 
 With our new understanding of various Serum trivia, we are now ready to attempt to place an order.
 
@@ -368,4 +368,4 @@ for (let openOrders of await market.findOpenOrdersAccountsForOwner(
 Your tokens should appear in your wallet (settled). Note that sometimes if you are receiving tokens from a market with SOL as part of the pair, it may be returned to you as wrapped SOL. So if you don't see the balance in your wallet, a) check that the transaction is confirmed, and b) use the `$ spl-token accounts` CLI command to see if it has been returned as wSOL.
 
 ### Summary
-This part 1 of "How the F*** do you Use the Serum-TS Client" primarily discussed Serum's implementation, and the high level aspects of interacting with it. I make no claims that this is error-free; I am certain I am wrong in places. Consider this a first draft on explaining the inner workings of the Serum client, and please correct me either in public or private, as this will improve my own understanding of the protocol. With this foundational stuff out of the way, we will explore more about what you can do with the client in subsequent parts. Thanks for reading.  
+This part 1 of "How the F*** do you Use the Serum-TS Client" primarily discussed Serum's implementation, and the high level aspects of interacting with it. I make no claims that this is error-free, but I will do my best to correct errors as I discover them. Consider this a first draft on explaining the inner workings of the Serum client, and please correct me either in public or private, as this will improve my own understanding of the protocol. With this foundational stuff out of the way, we will explore more about what you can do with the client in subsequent parts. Thanks for reading.  
