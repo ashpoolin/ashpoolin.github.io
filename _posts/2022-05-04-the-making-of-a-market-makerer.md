@@ -123,11 +123,11 @@ main();
 
 ```
 Very good. A word about the keypair. You can do it several ways, but the easiest is just to load it from an environment variable
-as I have done above. To do you can go to the console and just type `# export KEYPAIR=/path/to/myKeypair.json` or alternately, 
+as I have done above. To do you can go to the console and just type `$ export KEYPAIR=/path/to/myKeypair.json` or alternately, 
 do the following:
 ``` 
-# echo 'export KEYPAIR=/path/to/myKeypair.json' >> ~/.bashrc
-# source ~/.bashrc
+$ echo 'export KEYPAIR=/path/to/myKeypair.json' >> ~/.bashrc
+$ source ~/.bashrc
 ```
 Adding it to the `.bashrc` or `.bash_profile` files will ensure that your script can load the wallet for each session.
 
